@@ -1,0 +1,150 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>EcoSense - Notifikasi Sistem</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+</head>
+<body class="flex min-h-screen bg-[#F8FAFC]">
+
+    <aside class="w-64 sidebar flex flex-col fixed h-full border-r border-slate-100 z-10 bg-white">
+        <div class="p-8 flex items-center space-x-3">
+            <a href="dashboard.html" class="w-10 h-10 bg-blue-100 rounded-full flex items-center justify-center text-blue-600">
+                <img src="icon.png" alt="Logo EcoSense">
+            </a>
+            <div>
+                <h1 class="font-bold text-lg text-indigo-900 tracking-tight">EcoSense</h1>
+                <p class="text-[10px] text-slate-400 uppercase font-bold tracking-widest">Sistem Monitoring</p>
+            </div>
+        </div>
+
+        <nav class="mt-4 flex-grow">
+            <a href="dashboard.html" class="nav-item">
+                <i class="fas fa-th-large w-5 mr-3"></i> Dashboard
+            </a>
+            <a href="analitik.html" class="nav-item">
+                <i class="fas fa-chart-line w-5 mr-3"></i> Analitik
+            </a>
+            <a href="laporan.html" class="nav-item">
+                <i class="fas fa-file-invoice w-5 mr-3"></i> Laporan
+            </a>
+        </nav>
+
+        <div class="p-6">
+            <button class="btn-export w-full text-white py-3.5 rounded-2xl flex items-center justify-center font-semibold text-sm transition-all hover:scale-[1.02]">
+                <i class="fas fa-download mr-2"></i> Ekspor Laporan
+            </button>
+        </div>
+    </aside>
+
+    <main class="ml-64 flex-grow p-10 max-w-5xl">
+        
+        <header class="flex justify-between items-start mb-8 relative">
+            <div>
+                <h2 class="text-3xl font-bold text-slate-800 mb-2">Notifikasi Sistem</h2>
+                <p class="text-slate-500 font-medium text-sm">Pantau seluruh aktivitas, peringatan, dan pemeliharaan sensor lingkungan Anda.</p>
+            </div>
+            
+            <div class="absolute right-0 top-0 p-2 text-slate-700 cursor-pointer hover:text-indigo-600 transition">
+                <i class="fas fa-bell text-xl"></i>
+            </div>
+        </header>
+
+        <div class="mb-8">
+            <div class="inline-block px-4 py-1.5 bg-indigo-100 text-indigo-800 font-semibold text-xs rounded-full mb-4">
+                Hari Ini
+            </div>
+
+            <div class="bg-white p-6 rounded-2xl border border-slate-100 shadow-[0_2px_10px_-3px_rgba(6,81,237,0.05)] mb-4 flex gap-5">
+                <div class="w-12 h-12 rounded-xl flex items-center justify-center shrink-0 bg-red-100 text-red-500 text-lg">
+                    <i class="fas fa-exclamation-triangle"></i>
+                </div>
+                <div class="flex-grow">
+                    <div class="flex justify-between items-start mb-2">
+                        <h3 class="text-slate-800 font-bold text-base">Peringatan Suhu Kritis: Server Room A</h3>
+                        <span class="text-xs font-medium text-slate-400">10:45 WIB</span>
+                    </div>
+                    <p class="text-sm text-slate-500 leading-relaxed mb-4">
+                        Suhu ruangan telah mencapai 34°C, melampaui ambang batas aman operasional. Tindakan mitigasi segera diperlukan untuk mencegah kerusakan perangkat keras server.
+                    </p>
+                    <div class="flex gap-3">
+                        <button class="px-5 py-2 bg-indigo-600 hover:bg-indigo-700 text-white rounded-lg text-xs font-bold transition-colors">
+                            Tinjau Sensor
+                        </button>
+                        <button class="px-5 py-2 bg-indigo-100 hover:bg-indigo-200 text-indigo-700 rounded-lg text-xs font-bold transition-colors">
+                            Abaikan (1 Jam)
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <div class="bg-white p-6 rounded-2xl border border-slate-100 shadow-[0_2px_10px_-3px_rgba(6,81,237,0.05)] mb-4 flex gap-5">
+                <div class="w-12 h-12 rounded-xl flex items-center justify-center shrink-0 bg-blue-100 text-blue-500 text-lg">
+                    <i class="fas fa-wrench"></i>
+                </div>
+                <div class="flex-grow">
+                    <div class="flex justify-between items-start mb-2">
+                        <h3 class="text-slate-800 font-bold text-base">Pemeliharaan Terjadwal: Zona B</h3>
+                        <span class="text-xs font-medium text-slate-400">08:00 WIB</span>
+                    </div>
+                    <p class="text-sm text-slate-500 leading-relaxed">
+                        Sensor kualitas udara di Zona B dinonaktifkan sementara untuk kalibrasi rutin. Proses ini diperkirakan memakan waktu sekitar 30 menit. Tidak ada tindakan yang diperlukan.
+                    </p>
+                </div>
+            </div>
+        </div>
+
+        <div class="mb-10">
+            <div class="inline-block px-4 py-1.5 bg-slate-200 text-slate-600 font-semibold text-xs rounded-full mb-4">
+                Kemarin
+            </div>
+
+            <div class="bg-white p-6 rounded-2xl border border-slate-100 shadow-[0_2px_10px_-3px_rgba(6,81,237,0.05)] mb-4 flex gap-5">
+                <div class="w-12 h-12 rounded-xl flex items-center justify-center shrink-0 bg-emerald-100 text-emerald-500 text-lg">
+                    <i class="fas fa-droplet"></i>
+                </div>
+                <div class="flex-grow">
+                    <div class="flex justify-between items-start mb-2">
+                        <h3 class="text-slate-800 font-bold text-base">Kelembapan Rendah Terdeteksi</h3>
+                        <span class="text-xs font-medium text-slate-400">15:30 WIB</span>
+                    </div>
+                    <p class="text-sm text-slate-500 leading-relaxed mb-3">
+                        Level kelembapan di Fasilitas Penyimpanan Utama terdeteksi turun di bawah 40%. Sistem HVAC sedang berusaha menstabilkan kondisi lingkungan.
+                    </p>
+                    <a href="#" class="text-xs font-bold text-indigo-600 hover:text-indigo-800 transition-colors">Lihat Log Tren</a>
+                </div>
+            </div>
+
+            <div class="bg-white p-6 rounded-2xl border border-slate-100 shadow-[0_2px_10px_-3px_rgba(6,81,237,0.05)] mb-4 flex gap-5">
+                <div class="w-12 h-12 rounded-xl flex items-center justify-center shrink-0 bg-purple-100 text-purple-500 text-lg">
+                    <i class="fas fa-check-circle"></i>
+                </div>
+                <div class="flex-grow">
+                    <div class="flex justify-between items-start mb-2">
+                        <h3 class="text-slate-800 font-bold text-base">Konektivitas Node Dipulihkan</h3>
+                        <span class="text-xs font-medium text-slate-400">09:15 WIB</span>
+                    </div>
+                    <p class="text-sm text-slate-500 leading-relaxed">
+                        Koneksi jaringan menuju Node Sensor Utama telah stabil kembali setelah mengalami gangguan sementara selama 5 menit.
+                    </p>
+                </div>
+            </div>
+        </div>
+
+        <footer class="pt-6 border-t border-slate-200 flex justify-between items-center text-[12px] text-slate-500 font-medium pb-4">
+            <p>© 2026 EcoSense Indonesia. Hak Cipta Dilindungi.</p>
+            <div class="flex space-x-6">
+                <a href="#" class="hover:text-indigo-600 transition-colors">Kebijakan Privasi</a>
+                <a href="#" class="hover:text-indigo-600 transition-colors">Syarat & Ketentuan</a>
+                <a href="#" class="hover:text-indigo-600 transition-colors">Hubungi Kami</a>
+            </div>
+        </footer>
+
+    </main>
+
+</body>
+</html>

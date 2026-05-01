@@ -1,0 +1,159 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>EcoSense - Laporan Data Sensor</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+</head>
+<body class="flex min-h-screen bg-[#F8FAFC]">
+
+    <aside class="w-64 sidebar flex flex-col fixed h-full border-r border-slate-100 z-10">
+        <div class="p-8 flex items-center space-x-3">
+            <a href="dashboard.html" class="w-10 h-10 bg-blue-100 rounded-full flex items-center justify-center text-blue-600">
+                <img src="icon.png" alt="Logo EcoSense">
+            </a>
+            <div>
+                <h1 class="font-bold text-lg text-indigo-900 tracking-tight">EcoSense</h1>
+                <p class="text-[10px] text-slate-400 uppercase font-bold tracking-widest">Sistem Monitoring</p>
+            </div>
+        </div>
+
+        <nav class="mt-4 flex-grow">
+            <a href="dashboard.html" class="nav-item">
+                <i class="fas fa-th-large w-5 mr-3"></i> Dashboard
+            </a>
+            <a href="analitik.html" class="nav-item">
+                <i class="fas fa-chart-line w-5 mr-3"></i> Analitik
+            </a>
+            <a href="laporan.html" class="nav-item active">
+                <i class="fas fa-file-invoice w-5 mr-3"></i> Laporan
+            </a>
+        </nav>
+    </aside>
+
+    <main class="ml-64 flex-grow p-10">
+        <header class="flex justify-between items-center mb-10">
+            <div>
+                <h2 class="text-3xl font-bold text-slate-800">Laporan Data Sensor</h2>
+                <p class="text-slate-500 mt-1 font-medium text-sm">Gunakan filter untuk mengisolasi parameter.</p>
+            </div>
+            
+            <div class="flex items-center gap-4">
+                <div class="flex bg-white p-1 rounded-xl border border-slate-200 shadow-sm">
+                    <button class="px-4 py-2 bg-slate-50 rounded-lg text-xs font-bold text-slate-800">PDF</button>
+                    <button class="px-4 py-2 text-xs font-bold text-slate-400 hover:text-slate-600">Excel</button>
+                    <button class="px-4 py-2 text-xs font-bold text-slate-400 hover:text-slate-600">CSV</button>
+                </div>
+                <button class="btn-export text-white px-5 py-2.5 rounded-xl text-xs font-bold flex items-center">
+                    <i class="fas fa-download mr-2"></i> Ekspor Laporan
+                </button>
+                <a href="notifikasi.html" class="p-2 text-slate-700 relative cursor-pointer hover:text-indigo-600 transition">
+                    <div>
+                        <i class="fas fa-bell text-xl"></i>
+                    </div>
+                </a>
+                <div class="p-2.5 text-slate-400 relative">
+            </div>
+        </header>
+
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
+            <div class="glass-card p-5">
+                <label class="text-[11px] font-bold text-slate-400 uppercase tracking-widest block mb-3">Rentang Tanggal</label>
+                <div class="flex items-center gap-3 bg-slate-50 p-3 rounded-xl border border-slate-100 text-sm text-slate-600">
+                    <i class="far fa-calendar text-slate-400"></i>
+                    <span>01 Okt 2023 - 07 Okt 2023</span>
+                </div>
+            </div>
+            <div class="glass-card p-5">
+                <label class="text-[11px] font-bold text-slate-400 uppercase tracking-widest block mb-3">ID Sensor</label>
+                <div class="flex items-center gap-3 bg-slate-50 p-3 rounded-xl border border-slate-100 text-sm text-slate-600">
+                    <i class="fas fa-satellite-dish text-slate-400"></i>
+                    <span>Semua Sensor</span>
+                </div>
+            </div>
+            <div class="glass-card p-5">
+                <label class="text-[11px] font-bold text-slate-400 uppercase tracking-widest block mb-3">Status Metrik</label>
+                <div class="flex items-center gap-3 bg-slate-50 p-3 rounded-xl border border-slate-100 text-sm text-slate-600">
+                    <i class="fas fa-filter text-slate-400"></i>
+                    <span>Semua Status</span>
+                </div>
+            </div>
+        </div>
+
+        <div class="glass-card overflow-hidden mb-10">
+            <table class="w-full text-left border-collapse">
+                <thead>
+                    <tr class="text-slate-400 uppercase text-[11px] font-bold tracking-wider border-bottom border-slate-100">
+                        <th class="px-8 py-6">Tanggal & Waktu</th>
+                        <th class="px-8 py-6">ID Sensor</th>
+                        <th class="px-8 py-6">Metrik</th>
+                        <th class="px-8 py-6">Pembacaan</th>
+                        <th class="px-8 py-6">Status</th>
+                    </tr>
+                </thead>
+                <tbody class="text-slate-600 font-medium">
+                    <tr class="border-t border-slate-50">
+                        <td class="px-8 py-5">07 Okt 2023, 14:30</td>
+                        <td class="px-8 py-5 text-slate-400">ZONA-A-01</td>
+                        <td class="px-8 py-5">Suhu Udara</td>
+                        <td class="px-8 py-5">24.5°C</td>
+                        <td class="px-8 py-5"><span class="status-pill status-normal">Normal</span></td>
+                    </tr>
+                    <tr class="border-t border-slate-50">
+                        <td class="px-8 py-5">07 Okt 2023, 14:15</td>
+                        <td class="px-8 py-5 text-slate-400">ZONA-B-02</td>
+                        <td class="px-8 py-5">Kelembaban</td>
+                        <td class="px-8 py-5">68%</td>
+                        <td class="px-8 py-5"><span class="status-pill status-waspada">Waspada</span></td>
+                    </tr>
+                    <tr class="border-t border-slate-50">
+                        <td class="px-8 py-5">07 Okt 2023, 14:00</td>
+                        <td class="px-8 py-5 text-slate-400">ZONA-C-05</td>
+                        <td class="px-8 py-5">Kualitas Udara (AQI)</td>
+                        <td class="px-8 py-5 text-red-400 font-bold">152</td>
+                        <td class="px-8 py-5"><span class="status-pill status-bahaya">Bahaya</span></td>
+                    </tr>
+                    <tr class="border-t border-slate-50">
+                        <td class="px-8 py-5">07 Okt 2023, 13:45</td>
+                        <td class="px-8 py-5 text-slate-400">ZONA-A-01</td>
+                        <td class="px-8 py-5">Suhu Udara</td>
+                        <td class="px-8 py-5">24.2°C</td>
+                        <td class="px-8 py-5"><span class="status-pill status-normal">Normal</span></td>
+                    </tr>
+                    <tr class="border-t border-slate-50">
+                        <td class="px-8 py-5">07 Okt 2023, 13:30</td>
+                        <td class="px-8 py-5 text-slate-400">ZONA-D-12</td>
+                        <td class="px-8 py-5">Tekanan Udara</td>
+                        <td class="px-8 py-5">1012 hPa</td>
+                        <td class="px-8 py-5"><span class="status-pill status-normal">Normal</span></td>
+                    </tr>
+                </tbody>
+            </table>
+            
+            <div class="flex justify-center items-center gap-2 py-8 border-t border-slate-50">
+                <button class="w-8 h-8 flex items-center justify-center rounded-lg text-xs font-bold text-slate-400">01</button>
+                <button class="w-8 h-8 flex items-center justify-center rounded-lg text-xs font-bold bg-slate-100 text-slate-800">02</button>
+                <button class="w-8 h-8 flex items-center justify-center rounded-lg text-xs font-bold text-slate-400">03</button>
+                <span class="text-slate-300">...</span>
+                <button class="w-8 h-8 flex items-center justify-center rounded-lg text-xs font-bold text-slate-400">04</button>
+                <button class="w-8 h-8 flex items-center justify-center rounded-lg text-xs font-bold text-slate-400">05</button>
+                <button class="w-8 h-8 flex items-center justify-center rounded-lg text-xs font-bold text-slate-400">06</button>
+            </div>
+        </div>
+
+        <footer class="pt-8 border-t border-slate-100 flex justify-between items-center text-[11px] text-slate-400 font-medium">
+            <p>© 2026 EcoSense Kelompok 4. Hak Cipta Dilindungi.</p>
+            <div class="flex space-x-6 uppercase tracking-widest">
+                <a href="#" class="hover:text-indigo-600 transition-colors">Kebijakan Privasi</a>
+                <a href="#" class="hover:text-indigo-600 transition-colors">Syarat & Ketentuan</a>
+                <a href="#" class="hover:text-indigo-600 transition-colors">Hubungi Kami</a>
+            </div>
+        </footer>
+    </main>
+
+</body>
+</html>

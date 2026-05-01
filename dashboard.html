@@ -1,0 +1,205 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>EcoSense - Ringkasan</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+    <style>
+        /* Animasi sederhana untuk grafik saat halaman dimuat */
+        .chart-path {
+            stroke-dasharray: 2000;
+            stroke-dashoffset: 2000;
+            animation: drawChart 2s ease-out forwards;
+        }
+        @keyframes drawChart {
+            to { stroke-dashoffset: 0; }
+        }
+    </style>
+</head>
+<body class="flex min-h-screen bg-[#F8FAFC]">
+
+    <aside class="w-64 sidebar flex flex-col fixed h-full border-r border-slate-100 z-10 bg-white">
+        <div class="p-8 flex items-center space-x-3">
+            <a href="dashboard.html" class="w-10 h-10 bg-blue-100 rounded-full flex items-center justify-center text-blue-600">
+                <img src="icon.png" alt="Logo EcoSense">
+            </a>
+            <div>
+                <h1 class="font-bold text-lg text-indigo-900 tracking-tight">EcoSense</h1>
+                <p class="text-[10px] text-slate-400 uppercase font-bold tracking-widest">Sistem Monitoring</p>
+            </div>
+        </div>
+
+        <nav class="mt-4 flex-grow">
+            <a href="dashboard.html" class="nav-item active">
+                <i class="fas fa-th-large w-5 mr-3"></i> Dashboard
+            </a>
+            <a href="analitik.html" class="nav-item">
+                <i class="fas fa-chart-line w-5 mr-3"></i> Analitik
+            </a>
+            <a href="laporan.html" class="nav-item">
+                <i class="fas fa-file-invoice w-5 mr-3"></i> Laporan
+            </a>
+        </nav>
+
+        <div class="p-6">
+            <button class="btn-export w-full text-white py-3.5 rounded-2xl flex items-center justify-center font-semibold text-sm transition-all hover:scale-[1.02] bg-indigo-600 shadow-md">
+                <i class="fas fa-download mr-2"></i> Ekspor Laporan
+            </button>
+        </div>
+    </aside>
+
+    <main class="ml-64 flex-grow p-10 max-w-7xl">
+        <header class="flex justify-between items-start mb-8">
+            <div>
+                <h2 class="text-3xl font-bold text-slate-800 mb-1">Selamat Datang !</h2>
+                <p class="text-slate-500 font-medium text-sm">Sistem pemantauan lingkungan beroperasi optimal hari ini. Tidak ada peringatan aktif.</p>
+            </div>
+            
+            <a href="notifikasi.html" class="p-2 text-slate-700 relative cursor-pointer hover:text-indigo-600 transition">
+                <div>
+                    <i class="fas fa-bell text-xl"></i>
+                </div>
+            </a>
+            
+        </header>
+
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
+            <div class="bg-white p-6 rounded-2xl border border-slate-100 shadow-[0_2px_10px_-3px_rgba(6,81,237,0.05)]">
+                <div class="flex justify-between items-start mb-7">
+                    <h3 class="text-slate-800 font-semibold text-base">Prediksi Suhu</h3>
+                    <div class="w-8 h-8 bg-red-50 text-red-500 rounded-lg flex items-center justify-center">
+                        <i class="fas fa-temperature-half"></i>
+                    </div>
+                </div>
+                <div class="flex items-baseline gap-2 mb-4">
+                    <span class="text-4xl font-bold text-slate-800 mb-3">27.8°C</span>
+                    <span class="text-sm font-medium text-slate-500">Rata-rata</span>
+                </div>
+                <div class="text-sm font-semibold text-emerald-500 flex items-center">
+                    <i class="fas fa-arrow-trend-up mr-2"></i> +1.2°C dari kemarin
+                </div>
+            </div>
+
+            <div class="bg-white p-6 rounded-2xl border border-slate-100 shadow-[0_2px_10px_-3px_rgba(6,81,237,0.05)]">
+                <div class="flex justify-between items-start mb-7">
+                    <h3 class="text-slate-800 font-semibold text-base">Prediksi Kelembapan</h3>
+                    <div class="w-8 h-8 bg-blue-600 text-white rounded-lg flex items-center justify-center">
+                        <i class="fas fa-droplet"></i>
+                    </div>
+                </div>
+                <div class="flex items-baseline gap-2 mb-4">
+                    <span class="text-4xl font-bold text-slate-800 mb-3">62%</span>
+                    <span class="text-sm font-medium text-slate-500">Optimal</span>
+                </div>
+                <div class="text-sm font-semibold text-emerald-500 flex items-center">
+                    <i class="fas fa-circle-check mr-2"></i> Dalam batas normal
+                </div>
+            </div>
+
+            <div class="bg-white p-6 rounded-2xl border border-slate-100 shadow-[0_2px_10px_-3px_rgba(6,81,237,0.05)]">
+                <h3 class="text-slate-800 font-semibold text-base mb-4">Log Aktivitas Terbaru</h3>
+                <div class="space-y-4">
+                    <div class="flex gap-3">
+                        <div class="w-7 h-7 rounded-full bg-red-100 text-red-500 flex items-center justify-center shrink-0 mt-0.5">
+                            <i class="fas fa-exclamation-triangle text-[10px]"></i>
+                        </div>
+                        <div>
+                            <p class="text-sm text-slate-600 leading-tight">Peringatan: Suhu Ruang Server melampaui 31°C</p>
+                            <span class="text-[11px] text-slate-400 mt-1 block">14:15</span>
+                        </div>
+                    </div>
+                    <div class="flex gap-3">
+                        <div class="w-7 h-7 rounded-full bg-yellow-100 text-yellow-600 flex items-center justify-center shrink-0 mt-0.5">
+                            <i class="fas fa-info text-[10px]"></i>
+                        </div>
+                        <div>
+                            <p class="text-sm text-slate-600 leading-tight">Informasi: Sensor A terhubung kembali</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="bg-white p-8 rounded-2xl border border-slate-100 shadow-[0_2px_10px_-3px_rgba(6,81,237,0.05)] mb-10 relative">
+            <div class="flex justify-between items-end mb-8">
+                <div>
+                    <span class="text-slate-400 font-medium text-sm">Statistic</span>
+                    <h2 class="text-3xl font-bold text-slate-800 mt-1">Diagram Tren Suhu</h2>
+                </div>
+                <div class="flex bg-slate-50 p-1.5 rounded-xl border border-slate-100">
+                    <button class="px-5 py-1.5 bg-slate-900 text-white rounded-lg text-sm font-semibold shadow-sm">Daily</button>
+                    <button class="px-5 py-1.5 text-slate-500 hover:text-slate-800 transition rounded-lg text-sm font-semibold">Weekly</button>
+                    <button class="px-5 py-1.5 text-slate-500 hover:text-slate-800 transition rounded-lg text-sm font-semibold">Monthly</button>
+                </div>
+            </div>
+
+            <div class="relative w-full h-[300px]">
+                <div class="absolute left-[62%] top-[35%] bg-slate-900 text-white text-sm font-semibold py-2 px-4 rounded-lg z-10 transform -translate-x-1/2 -translate-y-full flex items-center shadow-lg">
+                    $3,348
+                    <div class="absolute -right-1.5 top-1/2 transform -translate-y-1/2 w-3 h-3 bg-slate-900 rotate-45"></div>
+                </div>
+                
+                <div class="absolute left-[64%] top-[25%] bottom-[10%] w-[2px] bg-indigo-500 z-0"></div>
+                <div class="absolute left-[64%] top-[25%] w-4 h-4 bg-indigo-500 rounded-full border-4 border-white transform -translate-x-1/2 -translate-y-1/2 z-10 shadow-sm"></div>
+
+                <svg viewBox="0 0 1000 300" class="w-full h-full overflow-visible" preserveAspectRatio="none">
+                    <defs>
+                        <linearGradient id="chartGradient" x1="0" y1="0" x2="0" y2="1">
+                            <stop offset="0%" stop-color="#4f46e5" stop-opacity="0.2" />
+                            <stop offset="100%" stop-color="#4f46e5" stop-opacity="0.0" />
+                        </linearGradient>
+                    </defs>
+
+                    <g class="text-slate-400 font-medium text-[13px]">
+                        <line x1="50" y1="20" x2="1000" y2="20" stroke="#f1f5f9" stroke-width="2" />
+                        <text x="0" y="25">40°</text>
+
+                        <line x1="50" y1="70" x2="1000" y2="70" stroke="#f1f5f9" stroke-width="2" />
+                        <text x="0" y="75">35°</text>
+
+                        <line x1="50" y1="120" x2="1000" y2="120" stroke="#f1f5f9" stroke-width="2" />
+                        <text x="0" y="125">30°</text>
+
+                        <line x1="50" y1="170" x2="1000" y2="170" stroke="#f1f5f9" stroke-width="2" />
+                        <text x="0" y="175">25°</text>
+
+                        <line x1="50" y1="220" x2="1000" y2="220" stroke="#f1f5f9" stroke-width="2" />
+                        <text x="0" y="225">20°</text>
+
+                        <line x1="50" y1="270" x2="1000" y2="270" stroke="#f1f5f9" stroke-width="2" />
+                        <text x="0" y="275">15°</text>
+                    </g>
+
+                    <g class="text-slate-500 font-medium text-[13px]">
+                        <text x="80" y="295">10:00</text>
+                        <text x="230" y="295">11:00</text>
+                        <text x="380" y="295">12:00</text>
+                        <text x="530" y="295">13:00</text>
+                        <text x="680" y="295">14:00</text>
+                        <text x="830" y="295">15:00</text>
+                        <text x="960" y="295">16:00</text>
+                    </g>
+
+                    <path d="M50,140 C100,140 120,90 170,95 C220,100 240,175 280,175 C320,175 350,120 400,110 C450,100 460,50 510,50 C560,50 580,100 630,95 C680,90 700,135 750,140 C800,145 830,170 880,160 C930,150 960,80 1000,70 L1000,270 L50,270 Z" fill="url(#chartGradient)" />
+                    
+                    <path class="chart-path" d="M50,140 C100,140 120,90 170,95 C220,100 240,175 280,175 C320,175 350,120 400,110 C450,100 460,50 510,50 C560,50 580,100 630,95 C680,90 700,135 750,140 C800,145 830,170 880,160 C930,150 960,80 1000,70" fill="none" stroke="#4f46e5" stroke-width="4" stroke-linecap="round" />
+                </svg>
+            </div>
+        </div>
+
+        <footer class="pt-6 border-t border-slate-200 flex justify-between items-center text-[12px] text-slate-500 font-medium pb-4">
+            <p>© 2026 EcoSense Kelompok 4. Hak Cipta Dilindungi.</p>
+            <div class="flex space-x-6">
+                <a href="#" class="hover:text-indigo-600 transition-colors">Kebijakan Privasi</a>
+                <a href="#" class="hover:text-indigo-600 transition-colors">Syarat & Ketentuan</a>
+                <a href="#" class="hover:text-indigo-600 transition-colors">Hubungi Kami</a>
+            </div>
+        </footer>
+    </main>
+
+</body>
+</html>
