@@ -1,0 +1,147 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>EcoSense - Ringkasan</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+    <style>
+        /* Animasi sederhana untuk grafik saat halaman dimuat */
+        .chart-path {
+            stroke-dasharray: 2000;
+            stroke-dashoffset: 2000;
+            animation: drawChart 2s ease-out forwards;
+        }
+        @keyframes drawChart {
+            to { stroke-dashoffset: 0; }
+        }
+    </style>
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="supabase.js"></script>
+    <script src="dashboard.js"></script>
+</head>
+<body>
+
+    <aside class="w-64 sidebar flex flex-col fixed h-full border-r border-slate-100 z-10 bg-white">
+        <div class="p-8 flex items-center space-x-3">
+            <a href="dashboard.html" class="w-10 h-10 bg-blue-100 rounded-full flex items-center justify-center text-blue-600">
+                <img src="icon.png" alt="Logo EcoSense">
+            </a>
+            <div>
+                <h1 class="font-bold text-lg text-indigo-900 tracking-tight">EcoSense</h1>
+                <p class="text-[10px] text-slate-400 uppercase font-bold tracking-widest">Sistem Monitoring</p>
+            </div>
+        </div>
+
+        <nav class="mt-4 flex-grow">
+            <a href="dashboard.html" class="nav-item active">
+                <i class="fas fa-th-large w-5 mr-3"></i> Dashboard
+            </a>
+            <a href="laporan.html" class="nav-item">
+                <i class="fas fa-file-invoice w-5 mr-3"></i> Laporan
+            </a>
+        </nav>
+
+    </aside>
+
+    <main class="ml-64 flex-grow p-10 max-w-7xl">
+        <header class="flex justify-between items-start mb-8">
+            <div>
+                <h2 id="sapaan-text" class="text-3xl font-bold text-slate-800 mb-1"></h2>
+                <h4 class="text-slate-500 font-bold text-sm">Sistem pemantauan suhu & kelembapan ruangan beroperasi optimal hari ini</h4>
+            </div>
+            
+        </header>
+
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
+            <div class="bg-white p-6 rounded-2xl border border-slate-100 shadow-[0_2px_10px_-3px_rgba(6,81,237,0.05)]">
+                <div class="flex justify-between items-start mb-10">
+                    <h3 class="text-slate-800 font-semibold text-base">Prediksi Suhu</h3>
+                    <div class="w-8 h-8 bg-red-50 text-red-500 rounded-lg flex items-center justify-center">
+                        <i class="fas fa-temperature-half"></i>
+                    </div>
+                </div>
+                <div class="flex items-baseline gap-2 mb-4">
+                    <span id="prediksi-suhu" class="text-4xl font-bold text-slate-800 mb-3">--.-°C</span>
+                    <span class="text-sm font-medium text-slate-500">Rata-rata</span>
+                </div>
+                <div id="status-suhu" class="text-sm font-semibold flex items-center text-slate-500">
+                    <i class="fas fa-spinner fa-spin mr-2"></i> Memuat status...
+                </div>
+            </div>
+
+            <div class="bg-white p-6 rounded-2xl border border-slate-100 shadow-[0_2px_10px_-3px_rgba(6,81,237,0.05)]">
+                <div class="flex justify-between items-start mb-10">
+                    <h3 class="text-slate-800 font-semibold text-base">Prediksi Kelembapan</h3>
+                    <div class="w-8 h-8 bg-blue-600 text-white rounded-lg flex items-center justify-center">
+                        <i class="fas fa-droplet"></i>
+                    </div>
+                </div>
+                <div class="flex items-baseline gap-2 mb-4">
+                    <span id="prediksi-lembab" class="text-4xl font-bold text-slate-800 mb-3">--%</span>
+                    <span class="text-sm font-medium text-slate-500">Optimal</span>
+                </div>
+                <div id="status-lembab" class="text-sm font-semibold flex items-center text-slate-500">
+                    <i class="fas fa-spinner fa-spin mr-2"></i> Memuat status...
+                </div>
+            </div>
+
+<div class="bg-white p-6 rounded-2xl border border-slate-100 shadow-[0_2px_10px_-3px_rgba(6,81,237,0.05)]">
+                <h3 class="text-slate-800 font-semibold text-base mb-4">Keterangan Kondisi</h3>
+                <div class="space-y-5">
+                    
+                    <div class="flex gap-3 items-start">
+                        <div id="ket-icon-bg-suhu" class="w-8 h-8 rounded-full bg-slate-100 text-slate-400 flex items-center justify-center shrink-0 mt-0.5 transition-colors duration-300">
+                            <i id="ket-icon-fas-suhu" class="fas fa-temperature-half text-[12px]"></i>
+                        </div>
+                        <div>
+                            <p class="text-sm font-semibold text-slate-700 leading-tight">Analisis Suhu</p>
+                            <span id="ket-teks-suhu" class="text-[12px] text-slate-500 mt-1 block leading-relaxed">
+                                <i class="fas fa-spinner fa-spin mr-1"></i> Menunggu data sensor...
+                            </span>
+                        </div>
+                    </div>
+
+                    <div class="flex gap-3 items-start">
+                        <div id="ket-icon-bg-lembab" class="w-8 h-8 rounded-full bg-slate-100 text-slate-400 flex items-center justify-center shrink-0 mt-0.5 transition-colors duration-300">
+                            <i id="ket-icon-fas-lembab" class="fas fa-droplet text-[12px]"></i>
+                        </div>
+                        <div>
+                            <p class="text-sm font-semibold text-slate-700 leading-tight">Analisis Kelembapan</p>
+                            <span id="ket-teks-lembab" class="text-[12px] text-slate-500 mt-1 block leading-relaxed">
+                                <i class="fas fa-spinner fa-spin mr-1"></i> Menunggu data sensor...
+                            </span>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+
+        <div class="bg-white p-8 rounded-2xl border border-slate-100 shadow-[0_2px_10px_-3px_rgba(6,81,237,0.05)] mb-10 relative">
+            <div class="flex justify-between items-end mb-8">
+                <div>
+                    <span class="text-slate-400 font-medium text-sm">Statistic</span>
+                    <h2 class="text-3xl font-bold text-slate-800 mt-1">Diagram Tren Suhu  Harian</h2>
+                </div>
+            </div>
+            <div class="relative w-full h-[300px]">
+                <canvas id="trendSuhuChart"></canvas>
+            </div>
+        </div>
+
+        <footer class="pt-6 border-t border-slate-200 flex justify-between items-center text-[12px] text-slate-500 font-medium pb-4">
+            <p>© 2026 EcoSense Kelompok 4. Hak Cipta Dilindungi.</p>
+            <div class="flex space-x-6">
+                <a href="#" class="hover:text-indigo-600 transition-colors">Kebijakan Privasi</a>
+                <a href="#" class="hover:text-indigo-600 transition-colors">Syarat & Ketentuan</a>
+                <a href="#" class="hover:text-indigo-600 transition-colors">Hubungi Kami</a>
+            </div>
+        </footer>
+    </main>
+</body>
+</html>
