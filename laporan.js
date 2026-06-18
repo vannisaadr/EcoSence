@@ -149,27 +149,77 @@ window.addEventListener('click', () => {
 });
 
 // --- FUNGSI UNDUH PDF ---
+// --- FUNGSI UNDUH PDF (CETAK SEMUA DATA) ---
 function unduhPDF() {
-    // Sembunyikan elemen yang tidak ingin dicetak
+    if (!semuaDataGrup || semuaDataGrup.length === 0) {
+        alert("Data tidak tersedia untuk dicetak!");
+        return;
+    }
+
+    const tbody = document.getElementById('tabel-laporan-body');
     const sidebar = document.querySelector('aside');
-    const headerBtn = document.querySelector('.relative.inline-block');
-    const pagination = document.querySelector('.flex.justify-between.items-center.px-4');
+    const headerBtn = document.querySelector('.relative.inline-block'); // Tombol Cetak & Dropdown
+    const filterSection = document.querySelector('.flex.flex-wrap.gap-4'); // Area Filter (jika ada)
+    const pagination = document.querySelector('.flex.justify-between.items-center.px-4.py-4'); // Navigasi halaman
+    const mainContent = document.querySelector('main');
 
-    // Menghilangkan elemen sementara untuk hasil PDF yang bersih
-    sidebar.style.display = 'none';
-    headerBtn.style.display = 'none';
-    pagination.style.display = 'none';
-    document.querySelector('main').classList.remove('ml-64');
+    // 1. SIMPAN KONTEN ASLI (halaman saat ini)
+    const kontenHalamanSaatIni = tbody.innerHTML;
 
-    window.print();
+    // 2. RENDER SEMUA DATA KE DALAM TABEL (Tanpa Potongan Paginasi)
+    let semuaBarisHTML = '';
+    semuaDataGrup.forEach(item => {
+        let statusTeks = "NORMAL";
+        let statusKelas = "bg-emerald-100 text-emerald-600";
+        
+        if (item.rerataSuhu > 32) {
+            statusTeks = "PANAS";
+            statusKelas = "bg-red-100 text-red-600";
+        }
 
-    // Kembalikan tampilan semula setelah dialog print tertutup
+        const jamMulai = String(item.jam).padStart(2, '0');
+        const jamSelesai = String((item.jam + 1) % 24).padStart(2, '0');
+
+        semuaBarisHTML += `
+            <tr class="border-t border-slate-200">
+                <td class="px-8 py-4 text-sm text-slate-500">${item.tgl}</td>
+                <td class="px-8 py-4 text-sm font-bold text-slate-800">
+                    ${jamMulai}:00 - ${jamSelesai}:00
+                </td>
+                <td class="px-8 py-4 text-sm text-center font-semibold text-slate-700">${item.rerataSuhu}°C</td>
+                <td class="px-8 py-4 text-sm text-center font-semibold text-slate-700">${item.rerataLembab}%</td>
+                <td class="px-8 py-4">
+                    <span class="px-3 py-1 rounded-full text-[10px] font-bold uppercase ${statusKelas}">
+                        ${statusTeks}
+                    </span>
+                </td>
+            </tr>
+        `;
+    });
+    
+    // Ganti isi tabel dengan semua data
+    tbody.innerHTML = semuaBarisHTML;
+
+    // 3. SEMBUNYIKAN ELEMEN UI YANG TIDAK DIPERLUKAN
+    if (sidebar) sidebar.style.display = 'none';
+    if (headerBtn) headerBtn.style.display = 'none';
+    if (pagination) pagination.style.display = 'none';
+    if (filterSection) filterSection.style.display = 'none';
+    if (mainContent) mainContent.classList.remove('ml-64');
+
+    // 4. JALANKAN PRINT
+    // Memberikan sedikit jeda agar browser sempat merender ulang tabel yang panjang
     setTimeout(() => {
-        sidebar.style.display = 'flex';
-        headerBtn.style.display = 'inline-block';
-        pagination.style.display = 'flex';
-        document.querySelector('main').classList.add('ml-64');
-    }, 1000);
+        window.print();
+
+        // 5. KEMBALIKAN TAMPILAN SEMULA
+        tbody.innerHTML = kontenHalamanSaatIni;
+        if (sidebar) sidebar.style.display = 'flex';
+        if (headerBtn) headerBtn.style.display = 'inline-block';
+        if (pagination) pagination.style.display = 'flex';
+        if (filterSection) filterSection.style.display = 'flex';
+        if (mainContent) mainContent.classList.add('ml-64');
+    }, 250);
 }
 
 function unduhCSV() {

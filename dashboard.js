@@ -7,7 +7,7 @@ function aturSapaan() {
     if (jamSekarang >= 1 && jamSekarang < 11) {
         teksSapaan = "Selamat Pagi !";
     } else if (jamSekarang >= 11 && jamSekarang < 15) {
-        teksSapaan = "Selamat Siang !";
+        teksSapaan = "Selamat Siang !"; 
     } else if (jamSekarang >= 15 && jamSekarang < 19) {
         teksSapaan = "Selamat Sore !";
     } else {
