@@ -8,7 +8,7 @@ function aturSapaan() {
         teksSapaan = "Selamat Pagi !";
     } else if (jamSekarang >= 11 && jamSekarang < 15) {
         teksSapaan = "Selamat Siang !"; 
-    } else if (jamSekarang >= 15 && jamSekarang < 19) {
+    } else if (jamSekarang >= 15 && jamSekarang < 18) {
         teksSapaan = "Selamat Sore !";
     } else {
         teksSapaan = "Selamat Malam !";
@@ -62,33 +62,52 @@ async function inisialisasiPrediksiAI() {
     }
 }
 
-// FUNGSI AI 1: Memprediksi Suhu Saat Ini (Kartu Atas)
+// FUNGSI AI 1: Memprediksi Suhu Menggunakan Linear Regression (Supervised Learning)
 function prosesPrediksiKartu(dataHistoris) {
     const jamSekarangWIB = new Date().getHours();
     
-    // Algoritma AI: Cari semua data di jam yang sama persis dari hari-hari sebelumnya
-    const dataJamSama = dataHistoris.filter(row => {
-        const jamData = new Date(row.created_at).getHours();
-        return jamData === jamSekarangWIB;
+    // 1. Siapkan data X (Jam) dan Y (Suhu/Kelembapan)
+    let n = dataHistoris.length;
+    let sumX = 0, sumY_suhu = 0, sumY_lembab = 0;
+    let sumXY_suhu = 0, sumXY_lembab = 0;
+    let sumXX = 0;
+
+    dataHistoris.forEach(row => {
+        const x = new Date(row.created_at).getHours(); // Input X: Jam historis
+        const y_suhu = parseFloat(row.suhu);          // Target Y1: Suhu asli
+        const y_lembab = parseFloat(row.kelembapan);   // Target Y2: Kelembapan asli
+
+        sumX += x;
+        sumXX += x * x;
+        
+        sumY_suhu += y_suhu;
+        sumXY_suhu += x * y_suhu;
+
+        sumY_v = y_lembab; // Kelembapan
+        sumY_lembab += y_lembab;
+        sumXY_lembab += x * y_lembab;
     });
 
-    let suhuPrediksi = 0;
-    let lembabPrediksi = 0;
+    // 2. Rumus Linear Regression: Mencari Slope (m) dan Intercept (c) -> y = mx + c
+    // Rumus Slope (m)
+    const slopeSuhu = (n * sumXY_suhu - sumX * sumY_suhu) / (n * sumXX - sumX * sumX);
+    const slopeLembab = (n * sumXY_lembab - sumX * sumY_lembab) / (n * sumXX - sumX * sumX);
 
-    // Jika ada data historis di jam tersebut, hitung pola prediksinya
-    if (dataJamSama.length > 0) {
-        const totalSuhu = dataJamSama.reduce((sum, row) => sum + parseFloat(row.suhu), 0);
-        const totalLembab = dataJamSama.reduce((sum, row) => sum + parseFloat(row.kelembapan), 0);
-        
-        suhuPrediksi = parseFloat((totalSuhu / dataJamSama.length).toFixed(1));
-        lembabPrediksi = parseFloat((totalLembab / dataJamSama.length).toFixed(1));
-    } else {
-        // Fallback jika jam tersebut sama sekali belum punya histori
+    // Rumus Intercept (c)
+    const interceptSuhu = (sumY_suhu - slopeSuhu * sumX) / n;
+    const interceptLembab = (sumY_lembab - slopeLembab * sumX) / n;
+
+    // 3. Prediksi Nilai Kontinu untuk Jam Sekarang (X = jamSekarangWIB)
+    let suhuPrediksi = parseFloat((slopeSuhu * jamSekarangWIB + interceptSuhu).toFixed(1));
+    let lembabPrediksi = parseFloat((slopeLembab * jamSekarangWIB + interceptLembab).toFixed(1));
+
+    // Jika hasil regresi menghasilkan angka aneh karena data kurang, beri fallback data terakhir
+    if (isNaN(suhuPrediksi)) {
         suhuPrediksi = parseFloat(dataHistoris[0].suhu);
         lembabPrediksi = parseFloat(dataHistoris[0].kelembapan);
     }
 
-    // --- UPDATE UI KARTU ---
+    // --- DI SINI KE BAWAH ADALAH KODE UPDATE UI (TETAP SAMA SEPERTI KODE LAMA KAMU) ---
     document.getElementById('prediksi-suhu').innerText = suhuPrediksi + '°C';
     document.getElementById('prediksi-lembab').innerText = lembabPrediksi + '%';
 
@@ -111,24 +130,22 @@ function prosesPrediksiKartu(dataHistoris) {
     // Update Keterangan Prediksi Suhu (Log Bawah)
     const teksSuhuEl = document.getElementById('ket-teks-suhu');
     const iconBgSuhu = document.getElementById('ket-icon-bg-suhu');
-
     if (suhuPrediksi > 32) {
-        teksSuhuEl.innerHTML = `<b>Prediksi AI:</b> Suhu diprediksi memanas (<b>${suhuPrediksi}°C</b>). Siapkan pendingin ruangan.`;
+        teksSuhuEl.innerHTML = `<b>Prediksi:</b> Suhu diprediksi memanas (<b>${suhuPrediksi}°C</b>).`;
         iconBgSuhu.className = "w-8 h-8 rounded-full bg-red-100 text-red-500 flex items-center justify-center shrink-0 mt-0.5";
     } else {
-        teksSuhuEl.innerHTML = `<b>Prediksi AI:</b> Pola suhu saat ini stabil di <b>${suhuPrediksi}°C</b>. Kondisi optimal.`;
+        teksSuhuEl.innerHTML = `<b>Prediksi:</b> Tren suhu stabil di <b>${suhuPrediksi}°C</b>.`;
         iconBgSuhu.className = "w-8 h-8 rounded-full bg-emerald-100 text-emerald-500 flex items-center justify-center shrink-0 mt-0.5";
     }
 
     // Update Keterangan Prediksi Lembab (Log Bawah)
     const teksLembabEl = document.getElementById('ket-teks-lembab');
     const iconBgLembab = document.getElementById('ket-icon-bg-lembab');
-
     if (lembabPrediksi > 60) {
-        teksLembabEl.innerHTML = `<b>Prediksi AI:</b> Potensi udara pengap karena kelembapan mencapai <b>${lembabPrediksi}%</b>.`;
+        teksLembabEl.innerHTML = `<b>Prediksi:</b> Potensi udara pengap karena kelembapan mencapai <b>${lembabPrediksi}%</b>.`;
         iconBgLembab.className = "w-8 h-8 rounded-full bg-blue-100 text-blue-500 flex items-center justify-center shrink-0 mt-0.5";
     } else {
-        teksLembabEl.innerHTML = `<b>Prediksi AI:</b> Kelembapan diprediksi ideal di angka <b>${lembabPrediksi}%</b>.`;
+        teksLembabEl.innerHTML = `<b>Prediksi:</b> Kelembapan diprediksi ideal di angka <b>${lembabPrediksi}%</b>.`;
         iconBgLembab.className = "w-8 h-8 rounded-full bg-emerald-100 text-emerald-500 flex items-center justify-center shrink-0 mt-0.5";
     }
 
