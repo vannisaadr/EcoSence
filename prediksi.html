@@ -1,0 +1,187 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>EcoSense - Analisis Prediksi AI</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <script src="supabase.js"></script>
+    <script src="prediksi.js"></script>
+</head>
+<body class="bg-slate-50 font-['Plus_Jakarta_Sans']">
+
+    <aside class="w-64 sidebar flex flex-col fixed h-full border-r border-slate-100 z-10 bg-white">
+        <div class="p-8 flex items-center space-x-3">
+            <a href="index.html" class="w-10 h-10 bg-blue-100 rounded-full flex items-center justify-center text-blue-600">
+                <img src="icon.png" alt="Logo EcoSense">
+            </a>
+            <div>
+                <h1 class="font-bold text-lg text-indigo-900 tracking-tight">EcoSense</h1>
+                <p class="text-[10px] text-slate-400 uppercase font-bold tracking-widest">Sistem Monitoring</p>
+            </div>
+        </div>
+
+        <nav class="mt-4 flex-grow">
+            <a href="index.html" class="flex items-center px-8 py-3.5 text-sm font-semibold text-slate-500 hover:bg-slate-50 hover:text-indigo-600 transition-colors">
+                <i class="fas fa-th-large w-5 mr-3"></i> Dashboard
+            </a>
+            <a href="laporan.html" class="flex items-center px-8 py-3.5 text-sm font-semibold text-slate-500 hover:bg-slate-50 hover:text-indigo-600 transition-colors">
+                <i class="fas fa-file-invoice w-5 mr-3"></i> Laporan
+            </a>
+            <a href="prediksi.html" class="flex items-center px-8 py-3.5 text-sm font-semibold text-indigo-600 bg-indigo-50/50 border-r-4 border-indigo-600 transition-colors">
+                <i class="fas fa-brain w-5 mr-3"></i> Prediksi
+            </a>
+        </nav>
+    </aside>
+
+    <main class="ml-64 flex-grow p-10 max-w-7xl">
+        <header class="mb-8">
+            <h2 class="text-3xl font-bold text-slate-800 mb-1">Analisis Perbandingan AI</h2>
+            <h4 class="text-slate-500 font-medium text-sm">Komparasi hasil prediksi parameter lingkungan berdasarkan 3 metode Machine Learning.</h4>
+        </header>
+
+        <div class="grid grid-cols-1 lg:grid-cols-3 gap-6 mb-8">
+            
+            <div class="bg-white p-6 rounded-2xl border border-slate-100 shadow-sm">
+                <div class="flex justify-between items-center mb-6">
+                    <div>
+                        <span class="text-xs font-bold text-indigo-600 uppercase tracking-wider">Metode 1</span>
+                        <h3 class="text-lg font-bold text-slate-800">Linear Regression</h3>
+                    </div>
+                    <div class="w-9 h-9 bg-indigo-50 text-indigo-600 rounded-xl flex items-center justify-center">
+                        <i class="fas fa-chart-line"></i>
+                    </div>
+                </div>
+                <p class="text-xs text-slate-400 mb-6 leading-relaxed">Memprediksi data menggunakan pendekatan garis lurus linier berdasarkan tren waktu jam.</p>
+                <div class="space-y-4 border-t border-slate-50 pt-4">
+                    <div class="flex justify-between items-center">
+                        <span class="text-sm font-semibold text-slate-500">Estimasi Suhu:</span>
+                        <span id="lr-suhu" class="text-xl font-bold text-slate-800">--.-°C</span>
+                    </div>
+                    <div class="flex justify-between items-center">
+                        <span class="text-sm font-semibold text-slate-500">Estimasi Kelembapan:</span>
+                        <span id="lr-lembab" class="text-xl font-bold text-slate-800">--%</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="bg-white p-6 rounded-2xl border border-slate-100 shadow-sm">
+                <div class="flex justify-between items-center mb-6">
+                    <div>
+                        <span class="text-xs font-bold text-emerald-600 uppercase tracking-wider">Metode 2</span>
+                        <h3 class="text-lg font-bold text-slate-800">Decision Tree</h3>
+                    </div>
+                    <div class="w-9 h-9 bg-emerald-50 text-emerald-600 rounded-xl flex items-center justify-center">
+                        <i class="fas fa-network-wired"></i>
+                    </div>
+                </div>
+                <p class="text-xs text-slate-400 mb-6 leading-relaxed">Memprediksi data melalui segmentasi percabangan kondisi (kondisi waktu & jam sibuk harian).</p>
+                <div class="space-y-4 border-t border-slate-50 pt-4">
+                    <div class="flex justify-between items-center">
+                        <span class="text-sm font-semibold text-slate-500">Estimasi Suhu:</span>
+                        <span id="dt-suhu" class="text-xl font-bold text-slate-800">--.-°C</span>
+                    </div>
+                    <div class="flex justify-between items-center">
+                        <span class="text-sm font-semibold text-slate-500">Estimasi Kelembapan:</span>
+                        <span id="dt-lembab" class="text-xl font-bold text-slate-800">--%</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="bg-white p-6 rounded-2xl border border-slate-100 shadow-sm">
+                <div class="flex justify-between items-center mb-6">
+                    <div>
+                        <span class="text-xs font-bold text-amber-600 uppercase tracking-wider">Metode 3 (Rekomendasi)</span>
+                        <h3 class="text-lg font-bold text-slate-800">KNN Regression</h3>
+                    </div>
+                    <div class="w-9 h-9 bg-amber-50 text-amber-600 rounded-xl flex items-center justify-center">
+                        <i class="fas fa-users-viewfinder"></i>
+                    </div>
+                </div>
+                <p class="text-xs text-slate-400 mb-6 leading-relaxed">Memprediksi berdasarkan nilai rata-rata dari <b class="text-slate-600">K-Tetangga Terdekat</b> yang memiliki karakteristik jam serupa.</p>
+                <div class="space-y-4 border-t border-slate-50 pt-4">
+                    <div class="flex justify-between items-center">
+                        <span class="text-sm font-semibold text-slate-500">Estimasi Suhu:</span>
+                        <span id="knn-suhu" class="text-xl font-bold text-slate-800">--.-°C</span>
+                    </div>
+                    <div class="flex justify-between items-center">
+                        <span class="text-sm font-semibold text-slate-500">Estimasi Kelembapan:</span>
+                        <span id="knn-lembab" class="text-xl font-bold text-slate-800">--%</span>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+
+        <div class="bg-white p-8 rounded-2xl border border-slate-100 shadow-sm">
+            <div class="flex items-center space-x-3 mb-4">
+                <div class="w-8 h-8 bg-indigo-600 text-white rounded-lg flex items-center justify-center text-sm">
+                    <i class="fas fa-lightbulb"></i>
+                </div>
+                <h3 class="text-xl font-bold text-slate-800">Kesimpulan & Ringkasan Perbedaan</h3>
+            </div>
+            <div class="prose max-w-none text-sm text-slate-600 leading-relaxed space-y-3">
+                <p id="teks-kesimpulan">Menghitung dan membandingkan deviasi hasil prediksi dari ketiga algoritma...</p>
+                
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-4 pt-4 mt-4 border-t border-slate-100 text-xs">
+                    <div class="p-3 bg-indigo-50/50 rounded-xl">
+                        <strong class="text-indigo-900 block mb-1">Karakter Linear Regression:</strong>
+                        Sangat kaku. Mengasumsikan suhu naik/turun secara konstan seiring waktu. Kurang akurat jika cuaca fluktuatif.
+                    </div>
+                    <div class="p-3 bg-emerald-50/50 rounded-xl">
+                        <strong class="text-emerald-900 block mb-1">Karakter Decision Tree:</strong>
+                        Lebih kontekstual karena mengelompokkan waktu (pagi/siang/malam). Menghasilkan prediksi berbasis segmentasi rata-rata blok waktu.
+                    </div>
+                    <div class="p-3 bg-amber-50/50 rounded-xl">
+                        <strong class="text-amber-900 block mb-1">Karakter KNN Regression:</strong>
+                        Paling dinamis untuk data lingkungan. Mencari momen historis nyata pada jam serupa, menghasilkan prediksi yang lebih realistis.
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="bg-white p-8 rounded-2xl border border-slate-100 shadow-sm mt-8 mb-10">
+            <h3 class="text-slate-800 font-bold text-lg mb-6 flex items-center">
+                <i class="fas fa-eye text-indigo-500 mr-3"></i> XAI (Explainable AI) Insights
+            </h3>
+            
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+                <div class="bg-indigo-50/30 border border-indigo-100 rounded-xl p-5">
+                    <h4 class="font-bold text-indigo-900 mb-3 text-sm flex items-center">
+                        <i class="fas fa-calculator mr-2"></i> Transparansi Regresi Linear
+                    </h4>
+                    <div id="xai-lr" class="text-xs text-slate-600 space-y-2">
+                        <p class="italic text-slate-400">Memproses persamaan matematis...</p>
+                    </div>
+                </div>
+
+                <div class="bg-emerald-50/30 border border-emerald-100 rounded-xl p-5">
+                    <h4 class="font-bold text-emerald-900 mb-3 text-sm flex items-center">
+                        <i class="fas fa-network-wired mr-2"></i> Jalur Keputusan Pohon
+                    </h4>
+                    <div id="xai-dt" class="text-xs text-slate-600 space-y-2">
+                        <p class="italic text-slate-400">Menelusuri percabangan aturan...</p>
+                    </div>
+                </div>
+
+                <div class="bg-amber-50/30 border border-amber-100 rounded-xl p-5">
+                    <h4 class="font-bold text-amber-900 mb-3 text-sm flex items-center">
+                        <i class="fas fa-users-viewfinder mr-2"></i> Tetangga Terdekat (KNN)
+                    </h4>
+                    <div id="xai-knn" class="text-xs text-slate-600 space-y-2">
+                        <p class="italic text-slate-400">Mencari kemiripan data...</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <footer class="mt-10 pt-6 border-t border-slate-200 flex justify-between items-center text-[12px] text-slate-500 font-medium">
+            <p>© 2026 EcoSense Kelompok 4. Hak Cipta Dilindungi.</p>
+        </footer>
+    </main>
+    
+</body>
+</html>
